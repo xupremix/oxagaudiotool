@@ -4,13 +4,18 @@ pub mod audio_tool {
     use std::collections::HashMap;
     use kira::manager::{AudioManager, AudioManagerSettings};
     use kira::manager::backend::DefaultBackend;
-    use kira::manager::error::PlaySoundError;
     use kira::sound::SoundData;
     use kira::sound::static_sound::StaticSoundData;
     use robotics_lib::event::events::Event;
     use robotics_lib::world::environmental_conditions::WeatherType;
     use robotics_lib::world::tile::TileType;
     use crate::audio_source_config::OxAgSoundConfig;
+
+    pub enum OxAgAudioToolError {
+        AudioManagerError(kira::manager::backend::cpal::Error),
+        FileError(kira::sound::FromFileError),
+        PlaySoundError(kira::manager::error::PlaySoundError<()>)
+    }
 
     pub struct OxAgAudioTool {
         event_to_sound_data: HashMap<Event, StaticSoundData>,
@@ -21,19 +26,15 @@ pub mod audio_tool {
         current_weather_type: Option<WeatherType>
     }
 
-    enum OxAgAudioToolError {
-        // TODO
-    }
-
     impl OxAgAudioTool {
         pub fn new(
             event_to_sound_config: HashMap<Event, OxAgSoundConfig>,
             tile_type_to_sound_config: HashMap<TileType, OxAgSoundConfig>,
             weather_type_to_sound_config: HashMap<WeatherType, OxAgSoundConfig>
-        ) -> Result<OxAgAudioTool, Error> {
+        ) -> Result<OxAgAudioTool, OxAgAudioToolError> {
             let audio_manager = AudioManager::<DefaultBackend>::new(AudioManagerSettings::default())
                 .map_err(|e| {
-                    Error
+                    OxAgAudioToolError::AudioManagerError(e)
                 })?;
 
             let mut event_to_sound_data: HashMap<Event, StaticSoundData> = HashMap::new();
@@ -61,8 +62,6 @@ pub mod audio_tool {
                 current_weather_type: None,
             })
         }
-
-        // TODO: Default audio sources
 
         pub fn play_audio_based_on_event(&mut self, event: &Event) -> Result<(), Error> {
             let event_sound_data = self.event_to_sound_data.get(event).cloned();
@@ -103,10 +102,10 @@ pub mod audio_tool {
             Ok(())
         }
 
-        pub fn play_audio(&mut self, sound_config: &OxAgSoundConfig) -> Result<(), PlaySoundError<StaticSoundData>> {
+        pub fn play_audio(&mut self, sound_config: &OxAgSoundConfig) -> Result<(), OxAgAudioToolError> {
             let sound_data = sound_config.to_sound_data().map_err(|_| { todo!()})?;
 
-            self.audio_manager.play(sound_data); // TODO: ereoreoreoroeroeororoeorre
+            self.audio_manager.play(sound_data).map_err(|e| OxAgAudioToolError::PlaySoundError(e))?;
 
             Ok(())
         }

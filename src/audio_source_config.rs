@@ -1,5 +1,6 @@
 use std::fmt::Error;
 use kira::sound::static_sound::{StaticSoundData, StaticSoundSettings};
+use crate::audio_tool::{OxAgAudioTool, OxAgAudioToolError};
 
 pub struct OxAgSoundConfig {
     pub(crate) path: String,
@@ -21,9 +22,9 @@ impl OxAgSoundConfig {
         }
     }
 
-    pub(crate) fn to_sound_data(&self) -> Result<StaticSoundData, Error> {
+    pub(crate) fn to_sound_data(&self) -> Result<StaticSoundData, OxAgAudioToolError> {
         StaticSoundData::from_file(&self.path, self.settings).map_err(|e| {
-            Default::default()
+            OxAgAudioToolError::FileError(e)
         })
     }
 }
