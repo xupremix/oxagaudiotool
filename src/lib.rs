@@ -67,11 +67,11 @@ pub mod audio_tool {
             })
         }
 
-        pub fn play_audio_based_on_event(&mut self, event: &Event) -> Result<(), Error> {
+        pub fn play_audio_based_on_event(&mut self, event: &Event) -> Result<(), OxAgAudioToolError> {
             let event_sound_data = self.event_to_sound_data.get(event_key(event)).cloned();
 
             if let Some(data) = event_sound_data {
-                self.audio_manager.play(data).map_err(|_| Error)?;
+                self.audio_manager.play(data).map_err(|e| OxAgAudioToolError::PlaySoundError(e))?;
             }
 
 
@@ -100,14 +100,14 @@ pub mod audio_tool {
             };
 
             if let Some(data) = tile_or_weather_sound_data {
-                self.audio_manager.play(data.clone()).map_err(|_| Error)?;
+                self.audio_manager.play(data.clone()).map_err(|e| OxAgAudioToolError::PlaySoundError(e))?;
             }
 
             Ok(())
         }
 
         pub fn play_audio(&mut self, sound_config: &OxAgSoundConfig) -> Result<(), OxAgAudioToolError> {
-            let sound_data = sound_config.to_sound_data().map_err(|_| { todo!()})?;
+            let sound_data = sound_config.to_sound_data()?;
 
             self.audio_manager.play(sound_data).map_err(|e| OxAgAudioToolError::PlaySoundError(e))?;
 
