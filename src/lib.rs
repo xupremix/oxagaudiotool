@@ -1,4 +1,6 @@
 pub mod audio_source_config;
+mod utils;
+
 pub mod audio_tool {
     use std::fmt::Error;
     use std::collections::HashMap;
@@ -10,7 +12,9 @@ pub mod audio_tool {
     use robotics_lib::world::environmental_conditions::WeatherType;
     use robotics_lib::world::tile::TileType;
     use crate::audio_source_config::OxAgSoundConfig;
+    use crate::utils::event_key;
 
+    #[derive(Debug)]
     pub enum OxAgAudioToolError {
         AudioManagerError(kira::manager::backend::cpal::Error),
         FileError(kira::sound::FromFileError),
@@ -18,7 +22,7 @@ pub mod audio_tool {
     }
 
     pub struct OxAgAudioTool {
-        event_to_sound_data: HashMap<Event, StaticSoundData>,
+        event_to_sound_data: HashMap<String, StaticSoundData>,
         tile_type_to_sound_data: HashMap<TileType, StaticSoundData>,
         weather_type_to_sound_data: HashMap<WeatherType, StaticSoundData>,
         audio_manager: AudioManager,
@@ -37,12 +41,12 @@ pub mod audio_tool {
                     OxAgAudioToolError::AudioManagerError(e)
                 })?;
 
-            let mut event_to_sound_data: HashMap<Event, StaticSoundData> = HashMap::new();
+            let mut event_to_sound_data: HashMap<String, StaticSoundData> = HashMap::new();
             let mut tile_type_to_sound_data: HashMap<TileType, StaticSoundData> = HashMap::new();
             let mut weather_type_to_sound_data: HashMap<WeatherType, StaticSoundData> = HashMap::new();
 
             for (event, config) in event_to_sound_config.iter() {
-                event_to_sound_data.insert(event.clone(), config.to_sound_data()?);
+                event_to_sound_data.insert(event_key(event).to_string(), config.to_sound_data()?);
             }
 
             for (tile_type, config) in tile_type_to_sound_config.iter() {
@@ -64,7 +68,7 @@ pub mod audio_tool {
         }
 
         pub fn play_audio_based_on_event(&mut self, event: &Event) -> Result<(), Error> {
-            let event_sound_data = self.event_to_sound_data.get(event).cloned();
+            let event_sound_data = self.event_to_sound_data.get(event_key(event)).cloned();
 
             if let Some(data) = event_sound_data {
                 self.audio_manager.play(data).map_err(|_| Error)?;
