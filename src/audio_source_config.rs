@@ -1,10 +1,10 @@
-use std::fmt::Error;
+use crate::error::error::OxAgAudioToolError;
 use kira::sound::static_sound::{StaticSoundData, StaticSoundSettings};
-use crate::audio_tool::{OxAgAudioTool, OxAgAudioToolError};
+use kira::sound::{EndPosition, PlaybackPosition, Region};
 
 pub struct OxAgSoundConfig {
     pub(crate) path: String,
-    pub(crate) settings: StaticSoundSettings
+    pub(crate) settings: StaticSoundSettings,
 }
 
 impl OxAgSoundConfig {
@@ -15,16 +15,21 @@ impl OxAgSoundConfig {
         }
     }
 
-    pub fn new_with_settings(path: String, settings: StaticSoundSettings) -> OxAgSoundConfig {
-        OxAgSoundConfig {
-            path,
-            settings,
-        }
+    pub fn new_with_settings(path: &str, settings: StaticSoundSettings) -> OxAgSoundConfig {
+        OxAgSoundConfig { path: path.to_string(), settings }
+    }
+
+    pub fn new_looped(path: &str) -> OxAgSoundConfig {
+        let mut settings = StaticSoundSettings::new();
+        settings.loop_region(Region {
+            start: PlaybackPosition::Samples(0),
+            end: EndPosition::EndOfAudio,
+        });
+
+        OxAgSoundConfig { path: path.to_string(), settings }
     }
 
     pub(crate) fn to_sound_data(&self) -> Result<StaticSoundData, OxAgAudioToolError> {
-        StaticSoundData::from_file(&self.path, self.settings).map_err(|e| {
-            OxAgAudioToolError::FileError(e)
-        })
+        Ok(StaticSoundData::from_file(&self.path, self.settings)?)
     }
 }
