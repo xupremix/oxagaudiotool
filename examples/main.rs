@@ -11,7 +11,7 @@ use robotics_lib::world::tile::{Content, Tile, TileType};
 use robotics_lib::world::World;
 use robotics_lib::world::world_generator::Generator;
 use oxagaudiotool::sound_config::OxAgSoundConfig;
-use oxagaudiotool::audio_tool::OxAgAudioTool;
+use oxagaudiotool::OxAgAudioTool;
 use oxagaudiotool::error::error::OxAgAudioToolError;
 
 struct DjRobot {

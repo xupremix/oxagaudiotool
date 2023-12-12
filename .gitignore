@@ -3,11 +3,5 @@ Cargo.lock
 .cargo/
 .vscode/
 __pycache__/
-
-target/*
-!target/
-!target/doc/
-target/doc/*
-!target/doc/oxagaudiotool/
-
+target/
 .DS_Store
