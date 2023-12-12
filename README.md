@@ -1,19 +1,23 @@
-# 🎧 OxAg audio tool
-This is a concise yet useful tool to enhance your project with audio functionalities!
+<img src="assets/logo.png" alt="logo" width="125" align="top" style="margin-right: 1rem"/>  
 
+# 🎧 OxAg audio tool
+This is a concise yet useful tool to enhance your project with audio functionalities!  
+
+[![Static Badge](https://img.shields.io/badge/OxAg-world_generator-orange)](https://github.com/xupremix/oxagworldgenerator)
 ## Main features
-#### TileType & WeatherType soundtrack
+#### 💠 TileType & WeatherType soundtrack
 This tool allows you to react to changes to the **TileType** on which the robot is located with audio.  
 You can provide the tool with sounds for each TileType and it will take care of playing the correct sound when the robot steps onto a new TileType.
 
 The exact same thing also works for **WeatherType**.  
 
-#### Mapping event to sound effects
+#### 💠 Mapping event to sound effects
 You can map any **Event** to a given sound and dispatch sounds at your command.
 
 ## Underlying implementation
 This tool uses [kira](https://docs.rs/kira/latest/kira/) under the hood and gives you full access to all of its settings.  
-This library provides wrappers that allow you to customise every aspect of the sound with kira if needed, and provides some quality of life methods for some commonly used settings, such as audio looping and volumes.
+
+There are wrappers that allow you to customise every aspect of the sound with kira if needed, and that provide some quality of life methods for some commonly used settings, such as **audio looping** and **volumes**.
 
 ## Example
 Here is a quick example on how to use this library:
