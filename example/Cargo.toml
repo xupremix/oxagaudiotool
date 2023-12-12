@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 oxagaudiotool={path="../"}
-robotics_lib = { path = "../../../Advanced-Programming-2023/Robotic-Lib" }
+robotics_lib = { path = "../../Robotic-Lib" }

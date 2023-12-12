@@ -6,5 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-robotics_lib = { path = "../../Advanced-Programming-2023/Robotic-Lib" }
+robotics_lib = { path = "../Robotic-Lib" }
 kira = "0.8.5"

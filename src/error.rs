@@ -1,12 +1,8 @@
-use kira::manager::backend::cpal::Error;
-use kira::manager::error::PlaySoundError;
-use kira::sound::FromFileError;
-
 pub mod error {
     use kira::manager::backend::cpal::Error;
     use kira::manager::error::PlaySoundError;
     use kira::sound::FromFileError;
-    use std::fmt::{write, Display, Formatter};
+    use std::fmt::{Display, Formatter};
 
     #[derive(Debug)]
     pub enum OxAgAudioToolError {

@@ -1,22 +1,20 @@
-pub mod audio_source_config;
+pub mod sound_config;
 pub mod error;
 mod test;
 mod util;
 
 pub mod audio_tool {
-    use crate::audio_source_config::OxAgSoundConfig;
+    use crate::sound_config::OxAgSoundConfig;
     use crate::error::error::OxAgAudioToolError;
     use crate::util::event_key;
     use kira::manager::backend::DefaultBackend;
     use kira::manager::{AudioManager, AudioManagerSettings};
     use kira::sound::static_sound::{StaticSoundData, StaticSoundHandle};
-    use kira::sound::SoundData;
     use kira::tween::Tween;
     use robotics_lib::event::events::Event;
     use robotics_lib::world::environmental_conditions::WeatherType;
     use robotics_lib::world::tile::TileType;
     use std::collections::HashMap;
-    use std::fmt::{Debug, Error, Formatter};
 
     pub struct OxAgAudioTool {
         event_to_sound_data: HashMap<String, StaticSoundData>,
@@ -79,7 +77,7 @@ pub mod audio_tool {
 
                     if self.current_tile_sound.is_none() || tile_type != self.current_tile_sound.as_ref().unwrap().0 {
                         if let Some(previous_tile_sound) = &mut self.current_tile_sound {
-                            previous_tile_sound.1.stop(Tween::default());
+                            let _ = previous_tile_sound.1.stop(Tween::default());
                         }
 
                         let sound_data = self.tile_type_to_sound_data.get(&tile_type);
@@ -99,7 +97,7 @@ pub mod audio_tool {
 
                     if self.current_weather_sound.is_none() || weather_type != self.current_weather_sound.as_ref().unwrap().0 {
                         if let Some(previous_weather_sound) = &mut self.current_weather_sound {
-                            previous_weather_sound.1.stop(Tween::default());
+                            let _ = previous_weather_sound.1.stop(Tween::default());
                         }
 
                         let sound_data = self.weather_type_to_sound_data.get(&weather_type);
