@@ -85,6 +85,8 @@ impl Generator for MyGen {
 fn main() -> Result<(), OxAgAudioToolError>{
     println!("Loading game...");
 
+    // Setup the sound configs
+    // We suggest you to use small files as if you use too many big audio files the startup times may increase
     let background_music = OxAgSoundConfig::new_looped_with_volume("assets/default/music.ogg", 2.0);
 
     let mut events = HashMap::new();
@@ -113,6 +115,7 @@ fn main() -> Result<(), OxAgAudioToolError>{
     weather.insert(WeatherType::TrentinoSnow, OxAgSoundConfig::new("assets/default/weather/weather_winter.ogg"));
     weather.insert(WeatherType::TropicalMonsoon, OxAgSoundConfig::new("assets/default/weather/weather_tropical.ogg"));
 
+    // Create the audio tool
     let audio = OxAgAudioTool::new(events, tiles, weather)?;
 
     let mut dj = DjRobot {
@@ -123,6 +126,8 @@ fn main() -> Result<(), OxAgAudioToolError>{
     let mut gen = MyGen::new();
 
     println!("Running!");
+
+    // Play background music :>
     dj.audio.play_audio(&background_music)?;
 
     let run = Runner::new(Box::new(dj), &mut gen);
@@ -131,7 +136,7 @@ fn main() -> Result<(), OxAgAudioToolError>{
         | Ok(mut r) => {
             let _ = loop {
                 let _ = r.game_tick();
-                sleep(Duration::from_millis(        10));
+                sleep(Duration::from_millis(100));
             };
         }
         | Err(e) => println!("{:?}", e),

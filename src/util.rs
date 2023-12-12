@@ -1,5 +1,6 @@
 use robotics_lib::event::events::Event;
 
+/// Converts an event to a recognizable key ignoring the event properties
 pub(crate) fn event_key(event: &Event) -> &str {
     match event {
         Event::Ready => { "ready" }

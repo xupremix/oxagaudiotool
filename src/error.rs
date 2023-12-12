@@ -4,10 +4,14 @@ pub mod error {
     use kira::sound::FromFileError;
     use std::fmt::{Display, Formatter};
 
+    /// The one and only error returned by this library
     #[derive(Debug)]
     pub enum OxAgAudioToolError {
+        /// Audio manager issue, see the wrapped [Error]
         AudioManagerError(Error),
+        /// File issue, probably a path to an audio file wasn't correct, see the wrapped [FromFileError]
         FileError(FromFileError),
+        /// Audio playing issue, see the wrapper [PlaySoundError]
         PlaySoundError(PlaySoundError<()>),
     }
 
