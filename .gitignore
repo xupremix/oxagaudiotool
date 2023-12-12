@@ -1,6 +1,11 @@
 Cargo.lock
-target/
 .idea/
 .cargo/
 .vscode/
 __pycache__/
+
+target/*
+!target/
+!target/doc/
+target/doc/*
+!target/doc/oxagaudiotool/
