@@ -120,7 +120,7 @@ fn main() -> Result<(), OxAgAudioToolError>{
 
     let mut dj = DjRobot {
         robot: Robot::new(),
-        audio: audio
+        audio
     };
 
     let mut gen = MyGen::new();
