@@ -35,7 +35,7 @@ use robotics_lib::world::tile::{Content, Tile, TileType};
 use robotics_lib::world::World;
 use robotics_lib::world::world_generator::Generator;
 use oxagaudiotool::sound_config::OxAgSoundConfig;
-use oxagaudiotool::audio_tool::OxAgAudioTool;
+use oxagaudiotool::OxAgAudioTool;
 use oxagaudiotool::error::error::OxAgAudioToolError;
 
 struct DjRobot {
@@ -169,7 +169,7 @@ fn main() -> Result<(), OxAgAudioToolError>{
     Ok(())
 }
 ```
-> This example is also available in a fully runnable project inside `/example`
+> This example is also available in a fully runnable project inside `/examples`
 
 ## Support & Feedback
 Feel free to [open an issue](https://github.com/xupremix/oxagaudiotool/issues) if either you have suggestions, think that something is missing or something is broken!
